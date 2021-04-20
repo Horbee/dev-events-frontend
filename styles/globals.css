@@ -1,0 +1,18 @@
+.wrapper {
+  flex-direction: column;
+  display: flex;
+  min-height: 100vh;
+}
+
+.navbar {
+  box-shadow: 0px 3px 6px #aaa;
+}
+
+.content {
+  flex-grow: 1;
+}
+
+.header,
+.footer {
+  flex-shrink: 0;
+}

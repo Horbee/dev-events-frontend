@@ -1,12 +1,14 @@
 import { useRouter } from "next/router";
 
+import { Layout } from "../../components/Layout";
+
 export default function MyEvent() {
   const router = useRouter();
 
   return (
-    <div>
+    <Layout>
       <h3>My Event</h3>
-      {router.query.slugy}
-    </div>
+      {router.query.slug}
+    </Layout>
   );
 }

@@ -1,5 +1,8 @@
 import Head from "next/head";
 
+import { Footer } from "./Footer";
+import { Header } from "./Header";
+
 interface LayoutProps {
   title?: string;
   description?: string;
@@ -13,13 +16,17 @@ export const Layout: React.FC<LayoutProps> = ({
   keywords = "events, dev, development"
 }) => {
   return (
-    <div>
+    <>
       <Head>
         <title>{title}</title>
         <meta name="description" content={description} />
         <meta name="keywords" content={keywords} />
       </Head>
-      {children}
-    </div>
+      <div className="wrapper">
+        <Header />
+        <div className="content">{children}</div>
+        <Footer />
+      </div>
+    </>
   );
 };
