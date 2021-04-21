@@ -24,3 +24,8 @@
 .vh-60 {
   height: 60vh;
 }
+
+.event-card {
+  max-width: 960px;
+  margin: 0 auto;
+}
