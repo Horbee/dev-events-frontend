@@ -1,5 +1,6 @@
 import { EventData } from "models/event";
 import { GetStaticProps } from "next";
+import { useRouter } from "next/router";
 
 import { EventItem } from "@/components/EventItem";
 import { Layout } from "@/components/Layout";
@@ -11,6 +12,9 @@ interface HomePageProps {
 }
 
 export default function HomePage({ events }: HomePageProps) {
+  const router = useRouter();
+  const openEvents = () => router.push("/events");
+
   return (
     <Layout>
       <div className={styles.landing}>
@@ -18,13 +22,24 @@ export default function HomePage({ events }: HomePageProps) {
         <p className="fs-5">Find the hottest developer events nearby!</p>
       </div>
 
-      <div className="container">
+      <div className="container my-4">
         <h1>Upcoming Events</h1>
 
-        {events.length === 0 && <h3>No events to show</h3>}
         {events.map((evt) => (
           <EventItem key={evt.id} evt={evt} />
         ))}
+
+        {events.length === 0 ? (
+          <h3>No events to show</h3>
+        ) : (
+          <button
+            type="button"
+            className="btn btn-dark btn-sm"
+            onClick={openEvents}
+          >
+            View all Events
+          </button>
+        )}
       </div>
     </Layout>
   );
@@ -33,5 +48,5 @@ export default function HomePage({ events }: HomePageProps) {
 export const getStaticProps: GetStaticProps = async () => {
   const res = await fetch(API_URL + "/api/events");
   const events = await res.json();
-  return { props: { events }, revalidate: 1 };
+  return { props: { events: events.slice(0, 3) }, revalidate: 1 };
 };
