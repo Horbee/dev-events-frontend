@@ -4,6 +4,7 @@ import { NotAllowed } from "models/response";
 import { events } from "./data.json";
 
 import type { NextApiRequest, NextApiResponse } from "next";
+
 export default (
   req: NextApiRequest,
   res: NextApiResponse<EventData[] | NotAllowed>

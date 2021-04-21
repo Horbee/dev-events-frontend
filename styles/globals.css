@@ -1,3 +1,7 @@
+a {
+  text-decoration: none;
+}
+
 .wrapper {
   flex-direction: column;
   display: flex;
@@ -25,7 +29,8 @@
   height: 60vh;
 }
 
-.event-card {
-  max-width: 960px;
-  margin: 0 auto;
+@media (min-width: 992px) {
+  .container {
+    max-width: 960px;
+  }
 }
