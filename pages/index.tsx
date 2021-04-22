@@ -1,6 +1,8 @@
+import axios from "axios";
 import { EventData } from "models/event";
 import { GetStaticProps } from "next";
 import { useRouter } from "next/router";
+import qs from "qs";
 
 import { EventItem } from "@/components/EventItem";
 import { Layout } from "@/components/Layout";
@@ -46,7 +48,8 @@ export default function HomePage({ events }: HomePageProps) {
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  const res = await fetch(API_URL + "/api/events");
-  const events = await res.json();
-  return { props: { events: events.slice(0, 3) }, revalidate: 1 };
+  const { data: events } = await axios.get<EventData[]>(API_URL + "/events", {
+    params: { _sort: "date:ASC", _limit: 3 }
+  });
+  return { props: { events }, revalidate: 1 };
 };

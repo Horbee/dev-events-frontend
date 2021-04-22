@@ -1,3 +1,4 @@
+import axios from "axios";
 import { EventData } from "models/event";
 import { GetStaticProps } from "next";
 
@@ -25,7 +26,6 @@ export default function EventsPage({ events }: EventsPageProps) {
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  const res = await fetch(API_URL + "/api/events");
-  const events = await res.json();
+  const { data: events } = await axios.get<EventData[]>(API_URL + "/events");
   return { props: { events }, revalidate: 1 };
 };

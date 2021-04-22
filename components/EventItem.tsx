@@ -8,7 +8,9 @@ interface EventItemProps {
 
 export const EventItem: React.FC<EventItemProps> = ({ evt }) => {
   const router = useRouter();
-  const imageSrc = evt.image || "/images/event-default.jpg";
+  const imageSrc = evt.image
+    ? evt.image.formats.thumbnail.url
+    : "/images/event-default.jpg";
 
   const openEvent = () => {
     router.push(`/events/${evt.slug}`);

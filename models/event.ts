@@ -1,3 +1,5 @@
+import { CloudinaryImage } from "./cloudinary-image";
+
 export interface EventData {
   id: number;
   name: string;
@@ -8,5 +10,5 @@ export interface EventData {
   date: string;
   time: string;
   description: string;
-  image: string;
+  image: CloudinaryImage;
 }

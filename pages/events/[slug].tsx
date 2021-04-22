@@ -1,3 +1,4 @@
+import axios from "axios";
 import { EventData } from "models/event";
 import Image from "next/image";
 import Link from "next/link";
@@ -47,7 +48,7 @@ export default function EventDetails({ event }: EventDetailsProps) {
             {event.image && (
               <Image
                 className="img-fluid"
-                src={event.image}
+                src={event.image.formats.medium.url}
                 width={960}
                 height={600}
               />
@@ -70,8 +71,7 @@ export default function EventDetails({ event }: EventDetailsProps) {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const res = await fetch(`${API_URL}/api/events`);
-  const events = (await res.json()) as EventData[];
+  const { data: events } = await axios.get<EventData[]>(`${API_URL}/events`);
 
   const paths = events.map((evt) => ({
     params: { slug: evt.slug }
@@ -81,7 +81,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const res = await fetch(`${API_URL}/api/events/${params?.slug}`);
-  const events = await res.json();
+  const { data: events } = await axios.get<EventData[]>(`${API_URL}/events`, {
+    params: { slug_contains: params?.slug }
+  });
   return { props: { event: events[0], revalidate: 1 } };
 };
