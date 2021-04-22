@@ -5,6 +5,7 @@ import { Box, Flex, Stack } from "@chakra-ui/react";
 import { Brand } from "./Brand";
 import { MenuItem } from "./MenuItem";
 import { MenuToggle } from "./MenuToggle";
+import { Search } from "./Search";
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -23,6 +24,7 @@ export const Navbar = () => {
       boxShadow="md"
     >
       <Brand />
+      <Search />
       <MenuToggle isOpen={isOpen} toggle={toggle} />
 
       <Box
