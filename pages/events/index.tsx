@@ -5,6 +5,7 @@ import { GetStaticProps } from "next";
 import { EventItem } from "@/components/EventItem";
 import { Layout } from "@/components/Layout";
 import { API_URL } from "@/config/index";
+import { Container, Heading, Text } from "@chakra-ui/react";
 
 interface EventsPageProps {
   events: EventData[];
@@ -13,14 +14,20 @@ interface EventsPageProps {
 export default function EventsPage({ events }: EventsPageProps) {
   return (
     <Layout title="Browse Events">
-      <div className="container">
-        <h1>Browse Events</h1>
+      <Container my="5" maxW="container.md">
+        <Heading as="h1" size="xl" mb="3">
+          Browse Events
+        </Heading>
 
-        {events.length === 0 && <h3>No events to show</h3>}
+        {events.length === 0 && (
+          <Text as="h3" fontSize="xl">
+            No events to show
+          </Text>
+        )}
         {events.map((evt) => (
           <EventItem key={evt.id} evt={evt} />
         ))}
-      </div>
+      </Container>
     </Layout>
   );
 }

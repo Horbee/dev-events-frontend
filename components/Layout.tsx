@@ -1,5 +1,7 @@
 import Head from "next/head";
 
+import { Box, Flex } from "@chakra-ui/layout";
+
 import { Footer } from "./Footer";
 import { Header } from "./Header";
 
@@ -22,11 +24,11 @@ export const Layout: React.FC<LayoutProps> = ({
         <meta name="description" content={description} />
         <meta name="keywords" content={keywords} />
       </Head>
-      <div className="wrapper">
+      <Flex flexDirection="column" minHeight="100vh">
         <Header />
-        <div className="content">{children}</div>
+        <Box flexGrow={1}>{children}</Box>
         <Footer />
-      </div>
+      </Flex>
     </>
   );
 };

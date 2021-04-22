@@ -7,6 +7,7 @@ import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
 
 import { Layout } from "@/components/Layout";
 import { API_URL } from "@/config/index";
+import { Box, Button, Container, Flex, Heading, Text } from "@chakra-ui/react";
 
 import type { GetStaticPaths, GetStaticProps } from "next";
 interface EventDetailsProps {
@@ -20,52 +21,67 @@ export default function EventDetails({ event }: EventDetailsProps) {
 
   return (
     <Layout>
-      <div className="container my-3">
-        {!event && <h1>Event not found</h1>}
+      <Container my="5" maxW="container.md">
+        {!event && (
+          <Heading as="h1" size="2xl">
+            Event not found
+          </Heading>
+        )}
 
         {event && (
           <>
-            <div className="d-flex justify-content-end">
-              <button
-                type="button"
-                className="btn btn-outline-primary"
+            <Flex justifyContent="flex-end">
+              <Button
+                leftIcon={<FaPencilAlt />}
+                variant="outline"
+                colorScheme="blue"
                 onClick={openEditEvent}
               >
-                <FaPencilAlt className="me-2" />
                 Edit Event
-              </button>
-              <button type="button" className="btn btn-outline-danger ms-2">
-                <FaTrashAlt className="me-2" />
+              </Button>
+              <Button
+                leftIcon={<FaTrashAlt />}
+                variant="outline"
+                colorScheme="red"
+                ml="3"
+              >
                 Delete Event
-              </button>
-            </div>
-            <span>
+              </Button>
+            </Flex>
+            <Text>
               {new Date(event.date).toLocaleDateString("de-DE")}
               {" at "}
               {event.time}
-            </span>
-            <h1>{event.name}</h1>
+            </Text>
+            <Heading as="h1" size="xl" my="3">
+              {event.name}
+            </Heading>
             {event.image && (
               <Image
-                className="img-fluid"
                 src={event.image.formats.medium.url}
                 width={960}
                 height={600}
               />
             )}
-            <h3>Performers:</h3>
-            <p>{event.performers}</p>
-            <h3>Description:</h3>
-            <p>{event.description}</p>
-            <h3>Venue: {event.venue}</h3>
-            <p>{event.address}</p>
+            <Text as="h3" fontSize="xl">
+              Performers:
+            </Text>
+            <Text>{event.performers}</Text>
+            <Text as="h3" fontSize="xl">
+              Description:
+            </Text>
+            <Text>{event.description}</Text>
+            <Text as="h3" fontSize="xl">
+              Venue: {event.venue}
+            </Text>
+            <Text>{event.address}</Text>
 
             <Link href="/events">
-              <a className="">{"<"} Go Back</a>
+              <Text color="blue.400">{"<"} Go Back</Text>
             </Link>
           </>
         )}
-      </div>
+      </Container>
     </Layout>
   );
 }

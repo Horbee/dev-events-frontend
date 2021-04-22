@@ -20,6 +20,7 @@ export const Navbar = () => {
       p={5}
       bg={"white"}
       color={"black"}
+      boxShadow="md"
     >
       <Brand />
       <MenuToggle isOpen={isOpen} toggle={toggle} />

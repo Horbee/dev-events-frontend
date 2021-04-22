@@ -2,6 +2,8 @@ import { EventData } from "models/event";
 import Image from "next/image";
 import { useRouter } from "next/router";
 
+import { Box, Button, Flex, Heading } from "@chakra-ui/react";
+
 interface EventItemProps {
   evt: EventData;
 }
@@ -17,19 +19,28 @@ export const EventItem: React.FC<EventItemProps> = ({ evt }) => {
   };
 
   return (
-    <div className="d-flex shadow-sm p-3 mb-2 rounded align-items-center event-card">
-      <div className="flex-shrink-0">
+    <Flex
+      borderWidth="1px"
+      borderRadius="lg"
+      mb="2"
+      p="3"
+      boxShadow="md"
+      alignItems="center"
+    >
+      <Box flexShrink={0}>
         <Image src={imageSrc} width={170} height={100} />
-      </div>
-      <div className="flex-grow-1 ms-3">
-        <p className="m-0">
+      </Box>
+      <Box flexGrow={1} ml="3">
+        <Box>
           {new Date(evt.date).toLocaleDateString("de-DE")} at {evt.time}
-        </p>
-        <h4>{evt.name}</h4>
-      </div>
-      <button type="button" className="btn btn-danger" onClick={openEvent}>
+        </Box>
+        <Heading as="h4" size="md">
+          {evt.name}
+        </Heading>
+      </Box>
+      <Button colorScheme="red" onClick={openEvent}>
         Details
-      </button>
-    </div>
+      </Button>
+    </Flex>
   );
 };

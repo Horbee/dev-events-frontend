@@ -2,26 +2,30 @@ import Link from "next/link";
 import { FaFrown, FaTerminal } from "react-icons/fa";
 
 import { Layout } from "@/components/Layout";
-import styles from "@/styles/404.module.css";
+import { Flex, Heading, Icon, Stack, Text } from "@chakra-ui/react";
 
 const NotFound = () => {
   return (
     <Layout>
-      <div className="d-flex justify-content-center align-items-center vh-60">
-        <FaFrown className={styles.frown} />
-        <div className={styles.explanation}>
-          <h1 className={styles.notfound}>
-            <FaTerminal />
+      <Flex justifyContent="center" alignItems="center" height="60vh">
+        <Icon as={FaFrown} fontSize="10rem" />
+        <Stack ml="4" maxW="400px">
+          <Heading as="h1" size="3xl">
+            <Icon as={FaTerminal} />
             <strong> 404</strong>
-          </h1>
-          <p className="display-6">Your page is not found</p>
-          <p className="lead">
+          </Heading>
+          <Text fontSize="3xl">Your page is not found</Text>
+          <Text>
             Sorry, the page you are looking for does not exists, or it may have
             been removed.
-          </p>
-          <Link href="/">Back to Homepage</Link>
-        </div>
-      </div>
+          </Text>
+          <Link href="/">
+            <Text color="blue.400" cursor="pointer">
+              Back to Homepage
+            </Text>
+          </Link>
+        </Stack>
+      </Flex>
     </Layout>
   );
 };

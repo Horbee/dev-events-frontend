@@ -7,6 +7,7 @@ import { EventItem } from "@/components/EventItem";
 import { Layout } from "@/components/Layout";
 import { API_URL } from "@/config/index";
 import styles from "@/styles/Home.module.css";
+import { Box, Button, Container, Heading, Text } from "@chakra-ui/react";
 
 interface HomePageProps {
   events: EventData[];
@@ -18,30 +19,34 @@ export default function HomePage({ events }: HomePageProps) {
 
   return (
     <Layout>
-      <div className={styles.landing}>
-        <h1>Welcome To Dev Events</h1>
-        <p className="fs-5">Find the hottest developer events nearby!</p>
-      </div>
+      <Box className={styles.landing}>
+        <Heading as="h1" size="2xl">
+          Welcome To Company Events
+        </Heading>
+        <Text fontSize="lg" pt="3">
+          Find the hottest upcoming events of your company!
+        </Text>
+      </Box>
 
-      <div className="container my-4">
-        <h1>Upcoming Events</h1>
+      <Container my="5" maxW="container.md">
+        <Heading as="h1" size="xl" pb="3">
+          Upcoming Events
+        </Heading>
 
         {events.map((evt) => (
           <EventItem key={evt.id} evt={evt} />
         ))}
 
         {events.length === 0 ? (
-          <h3>No events to show</h3>
+          <Text as="h3" fontSize="xl">
+            No events to show
+          </Text>
         ) : (
-          <button
-            type="button"
-            className="btn btn-dark btn-sm"
-            onClick={openEvents}
-          >
+          <Button size="sm" colorScheme="blackAlpha" onClick={openEvents}>
             View all Events
-          </button>
+          </Button>
         )}
-      </div>
+      </Container>
     </Layout>
   );
 }
