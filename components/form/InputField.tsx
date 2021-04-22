@@ -1,19 +1,33 @@
 import { useField } from "formik";
 
-import { Input, InputProps } from "@chakra-ui/react";
+import { Box, FormControl, FormLabel, Input, InputProps, Text } from "@chakra-ui/react";
 
 interface InputFieldProps extends InputProps {
   name: string;
+  label: string;
 }
 
-export const InputField = (props: InputFieldProps) => {
-  console.log(props.name);
-  //   const [field, meta, helpers] = useField("name");
+export const InputField: React.FC<InputFieldProps> = ({
+  label,
+  isRequired,
+  children,
+  ...props
+}) => {
+  const [field, meta] = useField(props.name);
+
   return (
-    <>
-      {/* <Input {...field} {...props} /> */}
-      <Input {...props} />
-      {/* {meta.error && meta.touched && <div>{meta.error}</div>} */}
-    </>
+    <Box>
+      <FormControl id={props.id} isRequired={isRequired}>
+        <FormLabel>{label}</FormLabel>
+        {children ?? (
+          <Input
+            isInvalid={!!(meta.error && meta.touched)}
+            {...field}
+            {...props}
+          />
+        )}
+      </FormControl>
+      {meta.error && meta.touched && <Text color="red.400">{meta.error}</Text>}
+    </Box>
   );
 };

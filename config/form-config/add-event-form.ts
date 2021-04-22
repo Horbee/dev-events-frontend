@@ -35,8 +35,7 @@ export const addEventForm = (
       venue: Yup.string().required("Performers is a Required Field"),
       address: Yup.string().required("Address is a Required Field"),
       date: Yup.string().required("Date is a Required Field"),
-      time: Yup.string().required("Time is a Required Field"),
-      description: Yup.string().required("Description is a Required Field")
+      time: Yup.string().required("Time is a Required Field")
     }),
     onSubmit
   });

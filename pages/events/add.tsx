@@ -1,18 +1,14 @@
 import axios from "axios";
-import { useFormik } from "formik";
+import { FormikProvider } from "formik";
 import { EventData } from "models/event";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { createContext } from "react";
-import * as Yup from "yup";
 
 import { InputField } from "@/components/form/InputField";
 import { Layout } from "@/components/Layout";
 import { addEventForm, AddEventFormValues } from "@/config/form-config/add-event-form";
 import { API_URL } from "@/config/index";
-import { Button, Container, Grid, Heading, Input, Stack, Text, Textarea } from "@chakra-ui/react";
-
-const FormikContext = createContext({});
+import { Button, Container, Grid, Heading, Stack, Text, Textarea } from "@chakra-ui/react";
 
 export default function AddEvent() {
   const router = useRouter();
@@ -25,7 +21,7 @@ export default function AddEvent() {
     router.push(`/events/${event.slug}`);
   };
 
-  const { handleSubmit, getFieldProps } = addEventForm(onSubmit);
+  const eventForm = addEventForm(onSubmit);
 
   return (
     <Layout title="Add New Event">
@@ -40,82 +36,69 @@ export default function AddEvent() {
             Add Event:
           </Heading>
 
-          <form onSubmit={handleSubmit}>
-            <Grid templateColumns="repeat(2, 1fr)" gap={6}>
-              <InputField
-                type="text"
-                placeholder="Event Name"
-                {...getFieldProps("name")}
-              />
-              {/* <Input
-                id="name"
-                name="name"
-                type="text"
-                placeholder="Event Name"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                value={values.name}
-              /> */}
-              {/* <Input
+          <FormikProvider value={eventForm}>
+            <form onSubmit={eventForm.handleSubmit} noValidate={true}>
+              <Grid templateColumns="repeat(2, 1fr)" gap={6} mb="6">
+                <InputField
+                  type="text"
+                  name="name"
+                  placeholder="Event Name"
+                  label="Name"
+                  isRequired
+                />
+                <InputField
                   type="text"
                   name="performers"
-                  id="performers"
                   placeholder="Performers"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.performers}
+                  label="Performers"
+                  isRequired
                 />
-                <Input
+                <InputField
                   type="text"
                   name="venue"
-                  id="venue"
                   placeholder="Venue"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.venue}
+                  label="Venue"
+                  isRequired
                 />
-                <Input
+                <InputField
                   type="text"
                   name="address"
-                  id="address"
                   placeholder="Address"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.address}
+                  label="Address"
+                  isRequired
                 />
-                <Input
-                  name="date"
-                  id="date"
-                  placeholder="Date"
+                <InputField
                   type="date"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.date}
+                  placeholder="Date"
+                  name="date"
+                  label="Date"
+                  isRequired
                 />
-                <Input
+                <InputField
                   type="text"
-                  name="time"
-                  id="time"
                   placeholder="Time"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.time}
-                /> */}
-            </Grid>
-            {/* <Textarea
-                mt="6"
+                  name="time"
+                  label="Time"
+                  isRequired
+                />
+              </Grid>
+              <InputField
                 type="text"
-                name="description"
-                id="description"
                 placeholder="Event Description"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                value={values.description}
-              /> */}
-            <Button mt="4" type="submit" colorScheme="red">
-              Add Event
-            </Button>
-          </form>
+                name="description"
+                label="Event Description"
+              >
+                <Textarea
+                  type="text"
+                  placeholder="Event Description"
+                  {...eventForm.getFieldProps("description")}
+                />
+              </InputField>
+              <Button mt="4" type="submit" colorScheme="red">
+                Add Event
+              </Button>
+            </form>
+          </FormikProvider>
         </Stack>
       </Container>
     </Layout>
