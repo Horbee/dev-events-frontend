@@ -2,7 +2,6 @@ import axios from "axios";
 import { EventData } from "models/event";
 import { GetStaticProps } from "next";
 import { useRouter } from "next/router";
-import qs from "qs";
 
 import { EventItem } from "@/components/EventItem";
 import { Layout } from "@/components/Layout";
