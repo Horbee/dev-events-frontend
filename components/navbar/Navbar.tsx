@@ -39,6 +39,7 @@ export const Navbar = () => {
           pt={[4, 4, 0, 0]}
         >
           <MenuItem to="/events">Events</MenuItem>
+          <MenuItem to="/events/add">Add Event</MenuItem>
         </Stack>
       </Box>
     </Flex>

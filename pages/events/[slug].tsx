@@ -7,7 +7,7 @@ import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
 
 import { Layout } from "@/components/Layout";
 import { API_URL } from "@/config/index";
-import { Box, Button, Container, Flex, Heading, Text } from "@chakra-ui/react";
+import { Button, Container, Flex, Heading, Text } from "@chakra-ui/react";
 
 import type { GetStaticPaths, GetStaticProps } from "next";
 interface EventDetailsProps {
