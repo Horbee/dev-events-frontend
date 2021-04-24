@@ -1,7 +1,8 @@
 import { FormikHelpers, useFormik } from "formik";
+import { EventData } from "models/event";
 import * as Yup from "yup";
 
-export interface AddEventFormValues {
+export interface EventFormValues {
   name: string;
   performers: string;
   venue: string;
@@ -11,14 +12,14 @@ export interface AddEventFormValues {
   description: string;
 }
 
-export const addEventForm = (
+export const useEventForm = (
   onSubmit: (
-    values: AddEventFormValues,
-    formikHelpers: FormikHelpers<AddEventFormValues>
+    values: EventFormValues,
+    formikHelpers: FormikHelpers<EventFormValues>
   ) => void | Promise<any>,
-  intialValues?: Partial<AddEventFormValues>
+  intialValues?: Partial<EventFormValues>
 ) =>
-  useFormik<AddEventFormValues>({
+  useFormik<EventFormValues>({
     initialValues: {
       name: "",
       performers: "",
@@ -39,3 +40,21 @@ export const addEventForm = (
     }),
     onSubmit
   });
+
+export const getInitialValues = ({
+  name,
+  address,
+  date,
+  description,
+  performers,
+  time,
+  venue
+}: EventData): EventFormValues => ({
+  name,
+  address,
+  date,
+  description,
+  performers,
+  time,
+  venue
+});

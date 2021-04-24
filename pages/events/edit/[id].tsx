@@ -1,14 +1,23 @@
 import axios from "axios";
 import { FormikProvider } from "formik";
 import { EventData } from "models/event";
+import { GetServerSideProps } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useState } from "react";
+import { FaImage } from "react-icons/fa";
 
 import { InputField } from "@/components/form/InputField";
 import { Layout } from "@/components/Layout";
-import { EventFormValues, useEventForm } from "@/config/form-config/event-form";
+import {
+  EventFormValues,
+  getInitialValues,
+  useEventForm
+} from "@/config/form-config/event-form";
 import { API_URL } from "@/config/index";
 import {
+  Box,
   Button,
   Container,
   Grid,
@@ -18,30 +27,38 @@ import {
   Textarea
 } from "@chakra-ui/react";
 
-export default function AddEvent() {
+interface EditEventProps {
+  event?: EventData;
+}
+
+const EditEvent = ({ event }: EditEventProps) => {
   const router = useRouter();
 
   const onSubmit = async (values: EventFormValues) => {
-    const { data: event } = await axios.post<EventData>(
-      `${API_URL}/events`,
+    const { data } = await axios.put<EventData>(
+      `${API_URL}/events/${event?.id}`,
       values
     );
-    router.push(`/events/${event.slug}`);
+    router.push(`/events/${event?.slug}`);
   };
 
-  const eventForm = useEventForm(onSubmit);
+  const eventForm = useEventForm(onSubmit, event && getInitialValues(event));
+
+  const [imagePreview] = useState(
+    event?.image ? event.image.formats.thumbnail.url : null
+  );
 
   return (
-    <Layout title="Add New Event">
+    <Layout title="Edit Event">
       <Container my="5" maxW="container.md">
         <Stack spacing={4}>
-          <Link href="/events">
+          <Link href={`/events/${event?.slug}`}>
             <Text color="blue.400" cursor="pointer">
               Go Back
             </Text>
           </Link>
           <Heading as="h1" size="2xl">
-            Add Event:
+            Edit Event:
           </Heading>
 
           <FormikProvider value={eventForm}>
@@ -103,12 +120,36 @@ export default function AddEvent() {
                 />
               </InputField>
               <Button mt="4" type="submit" colorScheme="red">
-                Add Event
+                Update
               </Button>
             </form>
           </FormikProvider>
+          <Text as="h2" fontSize="2xl">
+            Event Image
+          </Text>
         </Stack>
+        {imagePreview ? (
+          <Image src={imagePreview} width={170} height={100} />
+        ) : (
+          <Text as="h2" fontSize="2xl">
+            No image provided
+          </Text>
+        )}
+        <Box>
+          <Button colorScheme="orange" size="sm" leftIcon={<FaImage />}>
+            Set Image
+          </Button>
+        </Box>
       </Container>
     </Layout>
   );
-}
+};
+
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+  const { data: event } = await axios.get<EventData>(
+    `${API_URL}/events/${params?.id}`
+  );
+  return { props: { event } };
+};
+
+export default EditEvent;
