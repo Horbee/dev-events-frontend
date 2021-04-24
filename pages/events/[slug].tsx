@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
 
+import { useConfirmationModal } from "@/components/confirmation-dialog/useConfirmationDialog";
 import { Layout } from "@/components/Layout";
 import { API_URL } from "@/config/index";
 import { Button, Container, Flex, Heading, Text } from "@chakra-ui/react";
@@ -16,8 +17,19 @@ interface EventDetailsProps {
 
 export default function EventDetails({ event }: EventDetailsProps) {
   const router = useRouter();
+  const { getConfirmation } = useConfirmationModal();
 
   const openEditEvent = () => router.push(`/events/edit/${event?.id}`);
+  const deleteEvent = async () => {
+    const confirm = await getConfirmation(
+      "Delete Event",
+      "Are you sure, you want to delete this event?"
+    );
+    if (confirm) {
+      await axios.delete(`${API_URL}/events/${event?.id}`);
+      router.push("/events");
+    }
+  };
 
   return (
     <Layout>
@@ -44,6 +56,7 @@ export default function EventDetails({ event }: EventDetailsProps) {
                 variant="outline"
                 colorScheme="red"
                 ml="3"
+                onClick={deleteEvent}
               >
                 Delete Event
               </Button>
