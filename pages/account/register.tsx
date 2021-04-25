@@ -1,6 +1,7 @@
-import { register } from "features/user/userSlice";
+import { registerUser } from "features/user/userSlice";
 import { FormikProvider } from "formik";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { FaUserPlus } from "react-icons/fa";
 import { useAppDispatch } from "store/store";
 
@@ -11,9 +12,11 @@ import { Button, Container, Flex, Heading, Icon, Text, VStack } from "@chakra-ui
 
 export default function Register() {
   const dispatch = useAppDispatch();
+  const router = useRouter();
 
   const onSubmit = async (values: RegisterFormValues) => {
-    dispatch(register(values));
+    await dispatch(registerUser(values));
+    router.push("/account/dashboard");
   };
 
   const registerForm = useRegisterForm(onSubmit);
