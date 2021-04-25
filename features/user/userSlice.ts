@@ -29,6 +29,18 @@ export const loginUser = createAsyncThunk(
   }
 );
 
+export const checkAuthState = createAsyncThunk(
+  "users/checkAuthState",
+  async (values, thunkAPI) => {
+    try {
+      const { data } = await axios.get<UserModel>(`${NEXT_URL}/api/user`);
+      return data;
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err.response.data.message);
+    }
+  }
+);
+
 export const userSlice = createSlice({
   name: "user",
   initialState,
@@ -38,9 +50,6 @@ export const userSlice = createSlice({
     },
     logout: (state) => {
       state.userData = null;
-    },
-    checkAuthState: (state, action: PayloadAction<number>) => {
-      //   state.value += action.payload;
     }
   },
   extraReducers: {
@@ -50,11 +59,23 @@ export const userSlice = createSlice({
     [loginUser.rejected as any]: (state, action: PayloadAction<string>) => {
       //   state.userData = action.payload;
       //toast
+    },
+    [checkAuthState.fulfilled as any]: (
+      state,
+      action: PayloadAction<UserModel>
+    ) => {
+      state.userData = action.payload;
+    },
+    [checkAuthState.rejected as any]: (
+      state,
+      action: PayloadAction<string>
+    ) => {
+      state.userData = null;
     }
   }
 });
 
-export const { register, logout, checkAuthState } = userSlice.actions;
+export const { register, logout } = userSlice.actions;
 
 export const selectUser = (state: RootState) => state.user.userData;
 

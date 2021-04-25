@@ -49,7 +49,7 @@ export const Navbar = () => {
           {user ? (
             <>
               <MenuItem to="/events/add" text="Add Event" />
-              <MenuItem to="/dashboard" text="Dashboard" />
+              <MenuItem to="/account/dashboard" text="Dashboard" />
               <Button
                 leftIcon={<FaSignOutAlt />}
                 size="sm"

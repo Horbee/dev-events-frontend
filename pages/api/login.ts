@@ -1,4 +1,5 @@
 import axios from "axios";
+import cookie from "cookie";
 import { AuthResponse, NotAllowed } from "models/response";
 import { NextApiRequest, NextApiResponse } from "next";
 
@@ -17,17 +18,17 @@ export default async (
         password
       });
 
-      //    // Set Cookie
-      //    res.setHeader(
-      //     "Set-Cookie",
-      //     cookie.serialize("token", data.jwt, {
-      //       httpOnly: true,
-      //       secure: process.env.NODE_ENV !== "development",
-      //       maxAge: 60 * 60 * 24 * 7, // 1 week
-      //       sameSite: "strict",
-      //       path: "/"
-      //     })
-      //   );
+      // Set HTTPOnly Cookie
+      res.setHeader(
+        "Set-Cookie",
+        cookie.serialize("token", data.jwt, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV !== "development",
+          maxAge: 60 * 60 * 24 * 7, // 1 week
+          sameSite: "strict",
+          path: "/"
+        })
+      );
 
       res.status(200).json(data.user);
     } catch (error) {
