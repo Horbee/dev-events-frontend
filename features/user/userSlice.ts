@@ -41,15 +41,24 @@ export const checkAuthState = createAsyncThunk(
   }
 );
 
+export const logout = createAsyncThunk(
+  "users/logout",
+  async (values, thunkAPI) => {
+    try {
+      const { data } = await axios.post(`${NEXT_URL}/api/logout`);
+      return data;
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err.response.data.message);
+    }
+  }
+);
+
 export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
     register: (state, action: PayloadAction<any>) => {
       console.log(action.payload);
-    },
-    logout: (state) => {
-      state.userData = null;
     }
   },
   extraReducers: {
@@ -71,11 +80,15 @@ export const userSlice = createSlice({
       action: PayloadAction<string>
     ) => {
       state.userData = null;
-    }
+    },
+    [logout.fulfilled as any]: (state, action: PayloadAction<UserModel>) => {
+      state.userData = null;
+    },
+    [logout.rejected as any]: (state, action: PayloadAction<string>) => {}
   }
 });
 
-export const { register, logout } = userSlice.actions;
+export const { register } = userSlice.actions;
 
 export const selectUser = (state: RootState) => state.user.userData;
 

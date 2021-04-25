@@ -1,4 +1,5 @@
 import { logout, selectUser } from "features/user/userSlice";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { FaSignInAlt, FaSignOutAlt } from "react-icons/fa";
 import { useAppDispatch, useAppSelector } from "store/store";
@@ -13,9 +14,15 @@ import { Search } from "./Search";
 export const Navbar = () => {
   const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
+  const router = useRouter();
 
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen((prev) => !prev);
+
+  const handleLogout = async () => {
+    await dispatch(logout());
+    router.push("/account/login");
+  };
 
   return (
     <Flex
@@ -54,7 +61,7 @@ export const Navbar = () => {
                 leftIcon={<FaSignOutAlt />}
                 size="sm"
                 colorScheme="red"
-                onClick={() => dispatch(logout())}
+                onClick={handleLogout}
               >
                 Logout
               </Button>

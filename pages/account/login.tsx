@@ -1,6 +1,7 @@
 import { loginUser } from "features/user/userSlice";
 import { FormikProvider } from "formik";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { FaUser } from "react-icons/fa";
 import { useAppDispatch } from "store/store";
 
@@ -10,10 +11,12 @@ import { LoginFormValues, useLoginForm } from "@/config/form-config/login-form";
 import { Button, Container, Flex, Heading, Icon, Text, VStack } from "@chakra-ui/react";
 
 export default function Login() {
+  const router = useRouter();
   const dispatch = useAppDispatch();
 
   const onSubmit = async (values: LoginFormValues) => {
-    dispatch(loginUser(values));
+    await dispatch(loginUser(values));
+    router.push("/account/dashboard");
   };
 
   const loginForm = useLoginForm(onSubmit);
