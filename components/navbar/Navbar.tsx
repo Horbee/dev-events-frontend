@@ -1,6 +1,7 @@
 import { useState } from "react";
+import { FaSignInAlt } from "react-icons/fa";
 
-import { Box, Flex, Stack } from "@chakra-ui/react";
+import { Box, Button, Flex, Stack } from "@chakra-ui/react";
 
 import { Brand } from "./Brand";
 import { MenuItem } from "./MenuItem";
@@ -38,8 +39,13 @@ export const Navbar = () => {
           direction={["column", "row", "row", "row"]}
           pt={[4, 4, 0, 0]}
         >
-          <MenuItem to="/events">Events</MenuItem>
-          <MenuItem to="/events/add">Add Event</MenuItem>
+          <MenuItem to="/events" text="Events" />
+          <MenuItem to="/events/add" text="Add Event" />
+          <MenuItem to="/account/login">
+            <Button leftIcon={<FaSignInAlt />} size="sm" colorScheme="red">
+              Login
+            </Button>
+          </MenuItem>
         </Stack>
       </Box>
     </Flex>

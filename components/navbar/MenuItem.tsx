@@ -1,17 +1,23 @@
 import Link from "next/link";
 
-import { Text } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 
 type MenuItemProps = {
   to: string;
+  text?: string;
 };
 
-export const MenuItem: React.FC<MenuItemProps> = ({ children, to }) => {
+export const MenuItem: React.FC<MenuItemProps> = ({ children, to, text }) => {
   return (
     <Link href={to}>
-      <Text display="block" cursor="pointer">
+      <Box>
+        {text && (
+          <Text display="block" cursor="pointer">
+            {text}
+          </Text>
+        )}
         {children}
-      </Text>
+      </Box>
     </Link>
   );
 };
