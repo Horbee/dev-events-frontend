@@ -26,7 +26,7 @@ export default function EventDetails({ event }: EventDetailsProps) {
       "Are you sure, you want to delete this event?"
     );
     if (confirm) {
-      await axios.delete(`${API_URL}/events/${event?.id}`);
+      await axios.delete(`${API_URL}/events/${event?.id}`); // TODO: find a way to get token for this request
       router.push("/events");
     }
   };

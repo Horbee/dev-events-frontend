@@ -4,15 +4,16 @@ import { FaPencilAlt, FaTimes } from "react-icons/fa";
 
 import { Box, Flex, Heading, HStack, Icon, Text } from "@chakra-ui/react";
 
-import { useConfirmationModal } from "./confirmation-dialog/useConfirmationDialog";
-
 interface DashboardEventProps {
   evt: EventData;
+  handleDelete: (id: number) => void;
 }
 
-export const DashboardEvent: React.FC<DashboardEventProps> = ({ evt }) => {
+export const DashboardEvent: React.FC<DashboardEventProps> = ({
+  evt,
+  handleDelete
+}) => {
   const router = useRouter();
-  const { getConfirmation } = useConfirmationModal();
 
   const openEvent = () => {
     router.push(`/events/${evt.slug}`);
@@ -20,17 +21,6 @@ export const DashboardEvent: React.FC<DashboardEventProps> = ({ evt }) => {
 
   const editEvent = () => {
     router.push(`/events/edit/${evt.id}`);
-  };
-
-  const deleteEvent = async () => {
-    if (
-      await getConfirmation(
-        "Warning",
-        "Are you sure you want to delete this Event?"
-      )
-    ) {
-      console.log(evt.id);
-    }
   };
 
   return (
@@ -57,7 +47,11 @@ export const DashboardEvent: React.FC<DashboardEventProps> = ({ evt }) => {
         <Text color="blue.400" cursor="pointer" onClick={editEvent}>
           <Icon as={FaPencilAlt} /> Edit
         </Text>
-        <Text color="red.400" cursor="pointer" onClick={deleteEvent}>
+        <Text
+          color="red.400"
+          cursor="pointer"
+          onClick={() => handleDelete(evt.id)}
+        >
           <Icon as={FaTimes} /> Delete
         </Text>
       </HStack>

@@ -14,15 +14,18 @@ import { Layout } from "@/components/Layout";
 import { ModalDialog } from "@/components/ModalDialog";
 import { EventFormValues, getInitialValues, useEventForm } from "@/config/form-config/event-form";
 import { API_URL } from "@/config/index";
+import { parseCookies } from "@/helpers/cookie";
+import { createErrorToast } from "@/helpers/toasts";
 import {
     Box, Button, Container, Grid, Heading, Stack, Text, Textarea, useDisclosure
 } from "@chakra-ui/react";
 
 interface EditEventProps {
+  token: string;
   event?: EventData;
 }
 
-const EditEvent = ({ event }: EditEventProps) => {
+const EditEvent = ({ token, event }: EditEventProps) => {
   const router = useRouter();
   const {
     isOpen: isModalOpen,
@@ -31,8 +34,14 @@ const EditEvent = ({ event }: EditEventProps) => {
   } = useDisclosure();
 
   const onSubmit = async (values: EventFormValues) => {
-    await axios.put<EventData>(`${API_URL}/events/${event?.id}`, values);
-    router.push(`/events/${event?.slug}`);
+    try {
+      await axios.put<EventData>(`${API_URL}/events/${event?.id}`, values, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      router.push(`/events/${event?.slug}`);
+    } catch (err) {
+      createErrorToast(err.response.data.message, "Error");
+    }
   };
 
   const eventForm = useEventForm(onSubmit, event && getInitialValues(event));
@@ -133,7 +142,7 @@ const EditEvent = ({ event }: EditEventProps) => {
           {imagePreview ? (
             <Image src={imagePreview} width={170} height={100} />
           ) : (
-            <Text as="h2" fontSize="2xl">
+            <Text as="h2" fontSize="md">
               No image provided
             </Text>
           )}
@@ -160,11 +169,15 @@ const EditEvent = ({ event }: EditEventProps) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+export const getServerSideProps: GetServerSideProps = async ({
+  req,
+  params
+}) => {
+  const { token } = parseCookies(req);
   const { data: event } = await axios.get<EventData>(
     `${API_URL}/events/${params?.id}`
   );
-  return { props: { event } };
+  return { props: { event, token } };
 };
 
 export default EditEvent;

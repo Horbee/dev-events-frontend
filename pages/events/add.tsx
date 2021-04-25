@@ -1,6 +1,7 @@
 import axios from "axios";
 import { FormikProvider } from "formik";
 import { EventData } from "models/event";
+import { GetServerSideProps } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
@@ -8,25 +9,28 @@ import { InputField } from "@/components/form/InputField";
 import { Layout } from "@/components/Layout";
 import { EventFormValues, useEventForm } from "@/config/form-config/event-form";
 import { API_URL } from "@/config/index";
-import {
-  Button,
-  Container,
-  Grid,
-  Heading,
-  Stack,
-  Text,
-  Textarea
-} from "@chakra-ui/react";
+import { parseCookies } from "@/helpers/cookie";
+import { createErrorToast } from "@/helpers/toasts";
+import { Button, Container, Grid, Heading, Stack, Text, Textarea } from "@chakra-ui/react";
 
-export default function AddEvent() {
+interface AddEventProps {
+  token: string;
+}
+
+export default function AddEvent({ token }: AddEventProps) {
   const router = useRouter();
 
   const onSubmit = async (values: EventFormValues) => {
-    const { data: event } = await axios.post<EventData>(
-      `${API_URL}/events`,
-      values
-    );
-    router.push(`/events/${event.slug}`);
+    try {
+      const { data: event } = await axios.post<EventData>(
+        `${API_URL}/events`,
+        values,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      router.push(`/events/${event.slug}`);
+    } catch (err) {
+      createErrorToast(err.response.data.message, "Error");
+    }
   };
 
   const eventForm = useEventForm(onSubmit);
@@ -112,3 +116,8 @@ export default function AddEvent() {
     </Layout>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const { token } = parseCookies(req);
+  return { props: { token } };
+};
