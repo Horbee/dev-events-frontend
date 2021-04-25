@@ -2,15 +2,7 @@ import axios from "axios";
 import { FormEventHandler, useState } from "react";
 import { FaTrashAlt } from "react-icons/fa";
 
-import {
-  Box,
-  Button,
-  CloseButton,
-  Icon,
-  IconButton,
-  Image,
-  VStack
-} from "@chakra-ui/react";
+import { Box, Button, CloseButton, Icon, IconButton, Image, VStack } from "@chakra-ui/react";
 
 import { API_URL } from "../config";
 import { DropArea } from "./DropArea";
@@ -18,9 +10,14 @@ import { DropArea } from "./DropArea";
 interface ImageUploadProps {
   eventId: number;
   imageUploaded: () => void;
+  token: string;
 }
 
-export const ImageUpload = ({ eventId, imageUploaded }: ImageUploadProps) => {
+export const ImageUpload = ({
+  eventId,
+  imageUploaded,
+  token
+}: ImageUploadProps) => {
   const [image, setImage] = useState<File | null>(null);
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
@@ -32,7 +29,9 @@ export const ImageUpload = ({ eventId, imageUploaded }: ImageUploadProps) => {
       formData.append("refId", eventId.toString());
       formData.append("field", "image");
 
-      await axios.post(`${API_URL}/upload`, formData);
+      await axios.post(`${API_URL}/upload`, formData, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       imageUploaded();
     }
   };

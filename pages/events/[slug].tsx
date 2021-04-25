@@ -39,7 +39,7 @@ export default function EventDetails({ event }: EventDetailsProps) {
             Event not found
           </Heading>
         )}
-
+        {/* Remove controls if user is not the owner or not authenticated */}
         {event && (
           <>
             <Flex justifyContent="flex-end">

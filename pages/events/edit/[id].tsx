@@ -52,7 +52,10 @@ const EditEvent = ({ token, event }: EditEventProps) => {
 
   const imageUploaded = async () => {
     const { data } = await axios.get<EventData>(
-      `${API_URL}/events/${event?.id}`
+      `${API_URL}/events/${event?.id}`,
+      {
+        headers: { Authorization: `Bearer ${token}` }
+      }
     );
     setImagePreview(data.image.formats.thumbnail.url);
     closeModal();
@@ -163,7 +166,11 @@ const EditEvent = ({ token, event }: EditEventProps) => {
         onClose={closeModal}
         title="Image Upload"
       >
-        <ImageUpload eventId={event!.id} imageUploaded={imageUploaded} />
+        <ImageUpload
+          eventId={event!.id}
+          imageUploaded={imageUploaded}
+          token={token}
+        />
       </ModalDialog>
     </>
   );
