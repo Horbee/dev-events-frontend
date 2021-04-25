@@ -1,6 +1,8 @@
+import { register } from "features/user/userSlice";
 import { FormikProvider } from "formik";
 import Link from "next/link";
 import { FaUserPlus } from "react-icons/fa";
+import { useAppDispatch } from "store/store";
 
 import { InputField } from "@/components/form/InputField";
 import { Layout } from "@/components/Layout";
@@ -8,8 +10,10 @@ import { RegisterFormValues, useRegisterForm } from "@/config/form-config/regist
 import { Button, Container, Flex, Heading, Icon, Text, VStack } from "@chakra-ui/react";
 
 export default function Register() {
+  const dispatch = useAppDispatch();
+
   const onSubmit = async (values: RegisterFormValues) => {
-    console.log(values);
+    dispatch(register(values));
   };
 
   const registerForm = useRegisterForm(onSubmit);

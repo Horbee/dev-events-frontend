@@ -1,5 +1,7 @@
+import { logout, selectUser } from "features/user/userSlice";
 import { useState } from "react";
-import { FaSignInAlt } from "react-icons/fa";
+import { FaSignInAlt, FaSignOutAlt } from "react-icons/fa";
+import { useAppDispatch, useAppSelector } from "store/store";
 
 import { Box, Button, Flex, Stack } from "@chakra-ui/react";
 
@@ -9,6 +11,9 @@ import { MenuToggle } from "./MenuToggle";
 import { Search } from "./Search";
 
 export const Navbar = () => {
+  const user = useAppSelector(selectUser);
+  const dispatch = useAppDispatch();
+
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen((prev) => !prev);
 
@@ -40,12 +45,29 @@ export const Navbar = () => {
           pt={[4, 4, 0, 0]}
         >
           <MenuItem to="/events" text="Events" />
-          <MenuItem to="/events/add" text="Add Event" />
-          <MenuItem to="/account/login">
-            <Button leftIcon={<FaSignInAlt />} size="sm" colorScheme="red">
-              Login
-            </Button>
-          </MenuItem>
+
+          {user ? (
+            <>
+              <MenuItem to="/events/add" text="Add Event" />
+              <MenuItem to="/dashboard" text="Dashboard" />
+              <Button
+                leftIcon={<FaSignOutAlt />}
+                size="sm"
+                colorScheme="red"
+                onClick={() => dispatch(logout())}
+              >
+                Logout
+              </Button>
+            </>
+          ) : (
+            <>
+              <MenuItem to="/account/login">
+                <Button leftIcon={<FaSignInAlt />} size="sm" colorScheme="red">
+                  Login
+                </Button>
+              </MenuItem>
+            </>
+          )}
         </Stack>
       </Box>
     </Flex>

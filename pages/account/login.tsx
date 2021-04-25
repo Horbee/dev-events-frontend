@@ -1,15 +1,19 @@
+import { loginUser } from "features/user/userSlice";
 import { FormikProvider } from "formik";
 import Link from "next/link";
 import { FaUser } from "react-icons/fa";
+import { useAppDispatch } from "store/store";
 
 import { InputField } from "@/components/form/InputField";
 import { Layout } from "@/components/Layout";
 import { LoginFormValues, useLoginForm } from "@/config/form-config/login-form";
-import { Box, Button, Container, Flex, Heading, Icon, Text, VStack } from "@chakra-ui/react";
+import { Button, Container, Flex, Heading, Icon, Text, VStack } from "@chakra-ui/react";
 
 export default function Login() {
+  const dispatch = useAppDispatch();
+
   const onSubmit = async (values: LoginFormValues) => {
-    console.log(values);
+    dispatch(loginUser(values));
   };
 
   const loginForm = useLoginForm(onSubmit);
