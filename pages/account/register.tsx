@@ -15,8 +15,14 @@ export default function Register() {
   const router = useRouter();
 
   const onSubmit = async (values: RegisterFormValues) => {
-    await dispatch(registerUser(values));
-    router.push("/account/dashboard");
+    const result = await dispatch(registerUser(values));
+    if (result.meta.requestStatus === "fulfilled") {
+      router.push("/account/dashboard");
+    } else {
+      registerForm.resetForm({
+        values: { ...values, password: "", passwordConfirm: "" }
+      });
+    }
   };
 
   const registerForm = useRegisterForm(onSubmit);

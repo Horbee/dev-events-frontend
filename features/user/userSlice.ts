@@ -1,4 +1,5 @@
 import axios from "axios";
+import { createErrorToast } from "helpers/toasts";
 import { UserModel } from "models/user";
 import { RootState } from "store/store";
 
@@ -78,8 +79,7 @@ export const userSlice = createSlice({
       state.userData = action.payload;
     },
     [loginUser.rejected as any]: (state, action: PayloadAction<string>) => {
-      //   state.userData = action.payload;
-      //toast
+      createErrorToast(action.payload);
     },
     [registerUser.fulfilled as any]: (
       state,
@@ -88,8 +88,7 @@ export const userSlice = createSlice({
       state.userData = action.payload;
     },
     [registerUser.rejected as any]: (state, action: PayloadAction<string>) => {
-      //   state.userData = action.payload;
-      //toast
+      createErrorToast(action.payload);
     },
     [checkAuthState.fulfilled as any]: (
       state,

@@ -12,22 +12,10 @@ import { InputField } from "@/components/form/InputField";
 import { ImageUpload } from "@/components/ImageUpload";
 import { Layout } from "@/components/Layout";
 import { ModalDialog } from "@/components/ModalDialog";
-import {
-  EventFormValues,
-  getInitialValues,
-  useEventForm
-} from "@/config/form-config/event-form";
+import { EventFormValues, getInitialValues, useEventForm } from "@/config/form-config/event-form";
 import { API_URL } from "@/config/index";
 import {
-  Box,
-  Button,
-  Container,
-  Grid,
-  Heading,
-  Stack,
-  Text,
-  Textarea,
-  useDisclosure
+    Box, Button, Container, Grid, Heading, Stack, Text, Textarea, useDisclosure
 } from "@chakra-ui/react";
 
 interface EditEventProps {
@@ -43,10 +31,7 @@ const EditEvent = ({ event }: EditEventProps) => {
   } = useDisclosure();
 
   const onSubmit = async (values: EventFormValues) => {
-    const { data } = await axios.put<EventData>(
-      `${API_URL}/events/${event?.id}`,
-      values
-    );
+    await axios.put<EventData>(`${API_URL}/events/${event?.id}`, values);
     router.push(`/events/${event?.slug}`);
   };
 

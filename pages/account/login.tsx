@@ -15,8 +15,14 @@ export default function Login() {
   const dispatch = useAppDispatch();
 
   const onSubmit = async (values: LoginFormValues) => {
-    await dispatch(loginUser(values));
-    router.push("/account/dashboard");
+    const result = await dispatch(loginUser(values));
+    if (result.meta.requestStatus === "fulfilled") {
+      router.push("/account/dashboard");
+    } else {
+      loginForm.resetForm({
+        values: { ...values, password: "" }
+      });
+    }
   };
 
   const loginForm = useLoginForm(onSubmit);
