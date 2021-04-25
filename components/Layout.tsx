@@ -13,7 +13,7 @@ interface LayoutProps {
 
 export const Layout: React.FC<LayoutProps> = ({
   children,
-  title = "Dev Events | Hottest events for developers",
+  title = "Company Events | Hottest events for developers",
   description = "Find the hottest events from the IT branch nearby",
   keywords = "events, dev, development"
 }) => {
