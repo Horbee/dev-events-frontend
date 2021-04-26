@@ -1,4 +1,5 @@
 import { EventData } from "models/event";
+import moment from "moment";
 import Image from "next/image";
 import { useRouter } from "next/router";
 
@@ -41,7 +42,8 @@ export const EventItem: React.FC<EventItemProps> = ({ evt }) => {
         <Box flexGrow={1} ml="3">
           <Box>
             <Text fontSize={["sm", "md", "lg"]}>
-              {new Date(evt.date).toLocaleDateString("de-DE")} at {evt.time}
+              {moment(evt.date, "YYYY-MM-DD").format("DD.MM.YYYY")} at{" "}
+              {evt.time}
             </Text>
           </Box>
           <Heading as="h4" fontSize={["sm", "md", "lg"]}>

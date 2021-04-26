@@ -1,5 +1,6 @@
 import axios from "axios";
 import { EventData } from "models/event";
+import moment from "moment";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -9,6 +10,7 @@ import ReactMarkdown from "react-markdown";
 import gfm from "remark-gfm";
 
 import { useConfirmationModal } from "@/components/confirmation-dialog/useConfirmationDialog";
+import { EventMap } from "@/components/EventMap";
 import { Layout } from "@/components/Layout";
 import { API_URL, NEXT_URL } from "@/config/index";
 import { createErrorToast } from "@/helpers/toasts";
@@ -73,7 +75,7 @@ export default function EventDetails({ event }: EventDetailsProps) {
               </HStack>
             )}
             <Text>
-              {new Date(event.date).toLocaleDateString("de-DE")}
+              {moment(event.date, "YYYY-MM-DD").format("DD.MM.YYYY")}
               {" at "}
               {event.time}
             </Text>
@@ -105,6 +107,8 @@ export default function EventDetails({ event }: EventDetailsProps) {
                 <Text>{event.address}</Text>
               </Box>
             </VStack>
+
+            <EventMap evt={event} />
 
             <Link href="/events">
               <Text color="blue.400">{"<"} Go Back</Text>
