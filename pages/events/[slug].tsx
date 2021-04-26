@@ -3,12 +3,14 @@ import { EventData } from "models/event";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
+import { FaPencilAlt, FaTimes } from "react-icons/fa";
+import ReactMarkdown from "react-markdown";
+import gfm from "remark-gfm";
 
 import { useConfirmationModal } from "@/components/confirmation-dialog/useConfirmationDialog";
 import { Layout } from "@/components/Layout";
 import { API_URL } from "@/config/index";
-import { Button, Container, Flex, Heading, Text } from "@chakra-ui/react";
+import { Box, Container, Heading, HStack, Icon, Text, VStack } from "@chakra-ui/react";
 
 import type { GetStaticPaths, GetStaticProps } from "next";
 interface EventDetailsProps {
@@ -42,25 +44,14 @@ export default function EventDetails({ event }: EventDetailsProps) {
         {/* Remove controls if user is not the owner or not authenticated */}
         {event && (
           <>
-            <Flex justifyContent="flex-end">
-              <Button
-                leftIcon={<FaPencilAlt />}
-                variant="outline"
-                colorScheme="blue"
-                onClick={openEditEvent}
-              >
-                Edit Event
-              </Button>
-              <Button
-                leftIcon={<FaTrashAlt />}
-                variant="outline"
-                colorScheme="red"
-                ml="3"
-                onClick={deleteEvent}
-              >
-                Delete Event
-              </Button>
-            </Flex>
+            <HStack justify="flex-end">
+              <Text color="blue.400" cursor="pointer" onClick={openEditEvent}>
+                <Icon as={FaPencilAlt} /> Edit
+              </Text>
+              <Text color="red.400" cursor="pointer" onClick={deleteEvent}>
+                <Icon as={FaTimes} /> Delete
+              </Text>
+            </HStack>
             <Text>
               {new Date(event.date).toLocaleDateString("de-DE")}
               {" at "}
@@ -76,18 +67,24 @@ export default function EventDetails({ event }: EventDetailsProps) {
                 height={600}
               />
             )}
-            <Text as="h3" fontSize="xl">
-              Performers:
-            </Text>
-            <Text>{event.performers}</Text>
-            <Text as="h3" fontSize="xl">
-              Description:
-            </Text>
-            <Text>{event.description}</Text>
-            <Text as="h3" fontSize="xl">
-              Venue: {event.venue}
-            </Text>
-            <Text>{event.address}</Text>
+            <VStack align="flex-start" spacing="4">
+              <Text as="h3" fontSize="4xl">
+                Performers:
+              </Text>
+              <Text>{event.performers}</Text>
+              <Text as="h3" fontSize="4xl">
+                Description:
+              </Text>
+              <ReactMarkdown remarkPlugins={[gfm]}>
+                {event.description}
+              </ReactMarkdown>
+              <Box>
+                <Text as="h3" fontSize="4xl">
+                  Venue: {event.venue}
+                </Text>
+                <Text>{event.address}</Text>
+              </Box>
+            </VStack>
 
             <Link href="/events">
               <Text color="blue.400">{"<"} Go Back</Text>
