@@ -2,7 +2,7 @@ import { EventData } from "models/event";
 import Image from "next/image";
 import { useRouter } from "next/router";
 
-import { Box, Button, Flex, Heading } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Text, useBreakpointValue } from "@chakra-ui/react";
 
 interface EventItemProps {
   evt: EventData;
@@ -18,6 +18,8 @@ export const EventItem: React.FC<EventItemProps> = ({ evt }) => {
     router.push(`/events/${evt.slug}`);
   };
 
+  const buttonSize = useBreakpointValue({ base: "xs", sm: "sm", md: "md" });
+
   return (
     <Flex
       borderWidth="1px"
@@ -27,20 +29,29 @@ export const EventItem: React.FC<EventItemProps> = ({ evt }) => {
       boxShadow="md"
       alignItems="center"
     >
-      <Box flexShrink={0}>
+      <Box>
         <Image src={imageSrc} width={170} height={100} />
       </Box>
-      <Box flexGrow={1} ml="3">
-        <Box>
-          {new Date(evt.date).toLocaleDateString("de-DE")} at {evt.time}
+      <Flex
+        direction={["column", "row"]}
+        w="100%"
+        justifyContent="space-between"
+        ml="2"
+      >
+        <Box flexGrow={1} ml="3">
+          <Box>
+            <Text fontSize={["sm", "md", "lg"]}>
+              {new Date(evt.date).toLocaleDateString("de-DE")} at {evt.time}
+            </Text>
+          </Box>
+          <Heading as="h4" fontSize={["sm", "md", "lg"]}>
+            {evt.name}
+          </Heading>
         </Box>
-        <Heading as="h4" size="md">
-          {evt.name}
-        </Heading>
-      </Box>
-      <Button colorScheme="red" onClick={openEvent}>
-        Details
-      </Button>
+        <Button colorScheme="red" onClick={openEvent} size={buttonSize} mt="2">
+          Details
+        </Button>
+      </Flex>
     </Flex>
   );
 };

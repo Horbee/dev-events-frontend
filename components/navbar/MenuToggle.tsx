@@ -10,7 +10,7 @@ type MenuToggleProps = {
 export const MenuToggle = ({ toggle, isOpen }: MenuToggleProps) => {
   return (
     <Box
-      display={{ base: "block", md: "none" }}
+      display={{ base: "block", lg: "none" }}
       onClick={toggle}
       cursor="pointer"
     >

@@ -20,7 +20,7 @@ export default function EventSearchResults({ events }: EventsPageProps) {
   return (
     <Layout title="Browse Events">
       <Container my="5" maxW="container.md">
-        <Heading as="h1" size="xl" mb="3">
+        <Heading as="h1" fontSize={["lg", "4xl"]} mb="3">
           Search Results for {router.query.term}
         </Heading>
 

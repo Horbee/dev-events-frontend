@@ -41,7 +41,7 @@ export const Navbar = () => {
       <MenuToggle isOpen={isOpen} toggle={toggle} />
 
       <Box
-        display={{ base: isOpen ? "block" : "none", md: "block" }}
+        display={{ base: isOpen ? "block" : "none", lg: "block" }}
         flexBasis={{ base: "100%", md: "auto" }}
       >
         <Stack
@@ -49,7 +49,7 @@ export const Navbar = () => {
           align="center"
           justify={["center", "space-between", "flex-end", "flex-end"]}
           direction={["column", "row", "row", "row"]}
-          pt={[4, 4, 0, 0]}
+          pt={[4, 4, 4, 0]}
         >
           <MenuItem to="/events" text="Events" />
 
