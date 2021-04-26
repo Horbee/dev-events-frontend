@@ -3,13 +3,15 @@ import { EventData } from "models/event";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import { FaPencilAlt, FaTimes } from "react-icons/fa";
 import ReactMarkdown from "react-markdown";
 import gfm from "remark-gfm";
 
 import { useConfirmationModal } from "@/components/confirmation-dialog/useConfirmationDialog";
 import { Layout } from "@/components/Layout";
-import { API_URL } from "@/config/index";
+import { API_URL, NEXT_URL } from "@/config/index";
+import { createErrorToast } from "@/helpers/toasts";
 import { Box, Container, Heading, HStack, Icon, Text, VStack } from "@chakra-ui/react";
 
 import type { GetStaticPaths, GetStaticProps } from "next";
@@ -18,6 +20,7 @@ interface EventDetailsProps {
 }
 
 export default function EventDetails({ event }: EventDetailsProps) {
+  const [userIsOwner, setUserIsOwner] = useState(false);
   const router = useRouter();
   const { getConfirmation } = useConfirmationModal();
 
@@ -28,10 +31,25 @@ export default function EventDetails({ event }: EventDetailsProps) {
       "Are you sure, you want to delete this event?"
     );
     if (confirm) {
-      await axios.delete(`${API_URL}/events/${event?.id}`); // TODO: find a way to get token for this request
-      router.push("/events");
+      try {
+        await axios.delete(`${NEXT_URL}/api/events/delete/${event?.id}`);
+        router.push("/events");
+      } catch (err) {
+        createErrorToast(err.response.data.message, "Error");
+      }
     }
   };
+
+  useEffect(() => {
+    if (event) {
+      axios
+        .post(`${NEXT_URL}/api/ismine`, { ids: [event.id] })
+        .then((res) => {
+          setUserIsOwner(res.data);
+        })
+        .catch((err) => setUserIsOwner(false));
+    }
+  }, []);
 
   return (
     <Layout>
@@ -44,14 +62,16 @@ export default function EventDetails({ event }: EventDetailsProps) {
         {/* Remove controls if user is not the owner or not authenticated */}
         {event && (
           <>
-            <HStack justify="flex-end">
-              <Text color="blue.400" cursor="pointer" onClick={openEditEvent}>
-                <Icon as={FaPencilAlt} /> Edit
-              </Text>
-              <Text color="red.400" cursor="pointer" onClick={deleteEvent}>
-                <Icon as={FaTimes} /> Delete
-              </Text>
-            </HStack>
+            {userIsOwner && (
+              <HStack justify="flex-end">
+                <Text color="blue.400" cursor="pointer" onClick={openEditEvent}>
+                  <Icon as={FaPencilAlt} /> Edit
+                </Text>
+                <Text color="red.400" cursor="pointer" onClick={deleteEvent}>
+                  <Icon as={FaTimes} /> Delete
+                </Text>
+              </HStack>
+            )}
             <Text>
               {new Date(event.date).toLocaleDateString("de-DE")}
               {" at "}
