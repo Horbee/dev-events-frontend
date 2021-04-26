@@ -50,7 +50,11 @@ export default function AddEvent({ token }: AddEventProps) {
 
           <FormikProvider value={eventForm}>
             <form onSubmit={eventForm.handleSubmit} noValidate={true}>
-              <Grid templateColumns="repeat(2, 1fr)" gap={6} mb="6">
+              <Grid
+                templateColumns={["repeat(1fr)", "repeat(2, 1fr)"]}
+                gap={6}
+                mb="6"
+              >
                 <InputField
                   type="text"
                   name="name"

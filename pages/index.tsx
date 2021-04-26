@@ -23,7 +23,7 @@ export default function HomePage({ events }: HomePageProps) {
         <Heading as="h1" size="2xl">
           Welcome To Company Events
         </Heading>
-        <Text fontSize="lg" pt="3">
+        <Text fontSize={["md", "lg"]} pt="3">
           Find the hottest upcoming events of your company!
         </Text>
       </Box>

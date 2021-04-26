@@ -31,7 +31,13 @@ export default function Register() {
     <Layout>
       <Container>
         <Flex h="80vh" alignItems="center">
-          <VStack shadow="2xl" p="6" w="100%" align="start" spacing="6">
+          <VStack
+            shadow="2xl"
+            p={["3", "6"]}
+            w="100%"
+            align="start"
+            spacing="6"
+          >
             <Heading as="h1" size="xl">
               <Icon as={FaUserPlus} /> Register
             </Heading>

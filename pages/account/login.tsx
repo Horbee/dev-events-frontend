@@ -31,7 +31,13 @@ export default function Login() {
     <Layout>
       <Container>
         <Flex h="60vh" alignItems="center">
-          <VStack shadow="2xl" p="6" w="100%" align="start" spacing="6">
+          <VStack
+            shadow="2xl"
+            p={["3", "6"]}
+            w="100%"
+            align="start"
+            spacing="6"
+          >
             <Heading as="h1" size="xl">
               <Icon as={FaUser} /> Log In
             </Heading>
