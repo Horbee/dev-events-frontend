@@ -84,7 +84,7 @@ export default function EventDetails({ event }: EventDetailsProps) {
             </Heading>
             {event.image && (
               <Image
-                src={event.image.formats.medium.url}
+                src={event.image.formats.medium?.url ?? event.image.url}
                 width={960}
                 height={600}
               />

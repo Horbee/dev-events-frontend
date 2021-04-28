@@ -6,10 +6,10 @@ export interface CloudinaryImage {
   width: number;
   height: number;
   formats: {
+    large?: CloudinaryImageFormat;
+    medium?: CloudinaryImageFormat;
+    small?: CloudinaryImageFormat;
     thumbnail: CloudinaryImageFormat;
-    large: CloudinaryImageFormat;
-    medium: CloudinaryImageFormat;
-    small: CloudinaryImageFormat;
   };
   hash: string;
   ext: string;
