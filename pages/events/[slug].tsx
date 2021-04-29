@@ -134,5 +134,5 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { data: events } = await axios.get<EventData[]>(`${API_URL}/events`, {
     params: { slug_contains: params?.slug }
   });
-  return { props: { event: events[0], revalidate: 1 } };
+  return { props: { event: events[0] }, revalidate: 1 };
 };
