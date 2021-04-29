@@ -12,7 +12,6 @@ export default async (
 ) => {
   if (req.method === "DELETE") {
     const { id } = req.query;
-    console.log(id);
     if (!req.headers.cookie) {
       res.status(403).json({ message: "Not Authorized" });
       return;

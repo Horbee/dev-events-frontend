@@ -4,6 +4,7 @@ import { EventData } from "models/event";
 import { GetServerSideProps } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useState } from "react";
 
 import { InputField } from "@/components/form/InputField";
 import { Layout } from "@/components/Layout";
@@ -18,10 +19,12 @@ interface AddEventProps {
 }
 
 export default function AddEvent({ token }: AddEventProps) {
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const onSubmit = async (values: EventFormValues) => {
     try {
+      setLoading(true);
       const { data: event } = await axios.post<EventData>(
         `${API_URL}/events`,
         values,
@@ -30,6 +33,8 @@ export default function AddEvent({ token }: AddEventProps) {
       router.push(`/events/${event.slug}`);
     } catch (err) {
       createErrorToast(err.response.data.message, "Error");
+    } finally {
+      setLoading(true);
     }
   };
 
@@ -110,7 +115,12 @@ export default function AddEvent({ token }: AddEventProps) {
                   {...eventForm.getFieldProps("description")}
                 />
               </InputField>
-              <Button mt="4" type="submit" colorScheme="red">
+              <Button
+                mt="4"
+                type="submit"
+                colorScheme="red"
+                isLoading={loading}
+              >
                 Add Event
               </Button>
             </form>

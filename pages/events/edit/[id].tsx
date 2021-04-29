@@ -26,6 +26,7 @@ interface EditEventProps {
 }
 
 const EditEvent = ({ token, event }: EditEventProps) => {
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const {
     isOpen: isModalOpen,
@@ -35,12 +36,15 @@ const EditEvent = ({ token, event }: EditEventProps) => {
 
   const onSubmit = async (values: EventFormValues) => {
     try {
+      setLoading(true);
       await axios.put<EventData>(`${API_URL}/events/${event?.id}`, values, {
         headers: { Authorization: `Bearer ${token}` }
       });
       router.push(`/events/${event?.slug}`);
     } catch (err) {
       createErrorToast(err.response.data.message, "Error");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -137,7 +141,12 @@ const EditEvent = ({ token, event }: EditEventProps) => {
                     {...eventForm.getFieldProps("description")}
                   />
                 </InputField>
-                <Button mt="4" type="submit" colorScheme="red">
+                <Button
+                  mt="4"
+                  type="submit"
+                  colorScheme="red"
+                  isLoading={loading}
+                >
                   Update
                 </Button>
               </form>

@@ -19,10 +19,13 @@ export const ImageUpload = ({
   token
 }: ImageUploadProps) => {
   const [image, setImage] = useState<File | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     if (image) {
+      setLoading(true);
+
       const formData = new FormData();
       formData.append("files", image);
       formData.append("ref", "events");
@@ -33,10 +36,9 @@ export const ImageUpload = ({
         headers: { Authorization: `Bearer ${token}` }
       });
       imageUploaded();
+      setLoading(false);
     }
   };
-
-  console.log(image);
 
   return (
     <form onSubmit={handleSubmit}>
@@ -59,7 +61,7 @@ export const ImageUpload = ({
         ) : (
           <DropArea setImage={setImage} />
         )}
-        <Button colorScheme="red" type="submit" w="100%">
+        <Button colorScheme="red" type="submit" w="100%" isLoading={loading}>
           Upload
         </Button>
       </VStack>
